@@ -1,7 +1,7 @@
 
 const puppeteer = require('puppeteer');
-const phone = "0916619696";
-const password = "qazwsx123";
+const phone = "";
+const password = "";
 const credit_three = "";
 
 (async () => {
