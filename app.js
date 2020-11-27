@@ -10,9 +10,11 @@ const credit_three = "";
     });
     const page = await browser.newPage();
     page.on('dialog', async dialog => {
-        await dialog.dismiss();
+        await dialog.accept();
     });
-    await page.goto('https://www.momoshop.com.tw/main/Main.jsp', {waitUntil: 'networkidle2'});
+
+    await page.goto('https://www.momoshop.com.tw/', {waitUntil: 'networkidle2'});
+    await page.waitForSelector('#LOGINSTATUS')
     await page.click("#LOGINSTATUS")
     await page.waitForSelector('#loginForm')
     await page.type('input[id="memId"]', phone)
@@ -20,7 +22,8 @@ const credit_three = "";
     await page.click(".loginBtn")
     await page.waitForSelector('#bt_0_150_01 > ul.rightMenu > li.membername.loginTxt.loginselected')
     await page.goto('https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8267514&Area=search&mdiv=403&oid=1_1&cid=index&kw=ps5');
-   
+    //await page.goto('https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7781576&Area=search&mdiv=403&oid=1_2&cid=index&kw=2077');
+
     await page.evaluate(() =>{
         let area = document.querySelector(".checkoutArea");
         area.innerHTML = `
@@ -32,13 +35,15 @@ const credit_three = "";
         
     })
 
-    
-    while(!await page.$("#shpSumm")){
-            await page.click("#buy_yes")
-            await page.keyboard.press('Enter')
+    while(true){
+        if(await page.$('#shpSumm')) break
+        await page.click("#buy_yes")
+        console.log("click!")
     }
-    
-    await page.waitForSelector('#shpSumm > div > ul > li.checkoutBtn > a')
+
+ 
+
+    await page.waitForSelector('#shpSumm')
     await page.click("#shpSumm > div > ul > li.checkoutBtn > a")
     await page.waitForSelector('#cardCVV')
     await page.type('input[id="cardCVV"]', credit_three)
