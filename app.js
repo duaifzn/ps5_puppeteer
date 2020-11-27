@@ -1,8 +1,8 @@
 
 const puppeteer = require('puppeteer');
-const phone = ""
-const password = ""
-const credit_three = ""
+const phone = "";
+const password = "";
+const credit_three = "";
 
 (async () => {
     const browser = await puppeteer.launch({
@@ -15,7 +15,6 @@ const credit_three = ""
     await page.type('input[id="memId"]', phone)
 
     await page.type('input[id="passwd_show"]', password)
-    await page.click("#LOGINSTATUS")
     await page.click(".loginBtn")
     await page.waitForSelector('#bt_0_150_01 > ul.rightMenu > li.membername.loginTxt.loginselected')
     await page.goto('https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8267514&Area=search&mdiv=403&oid=1_1&cid=index&kw=ps5');
