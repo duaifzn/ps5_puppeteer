@@ -1,7 +1,7 @@
 
 const puppeteer = require('puppeteer');
-const phone = "";
-const password = "";
+const phone = "0916619696";
+const password = "qazwsx123";
 const credit_three = "";
 
 (async () => {
@@ -9,20 +9,35 @@ const credit_three = "";
         headless: false
     });
     const page = await browser.newPage();
-    await page.goto('https://www.momoshop.com.tw/main/Main.jsp');
+    page.on('dialog', async dialog => {
+        await dialog.dismiss();
+    });
+    await page.goto('https://www.momoshop.com.tw/main/Main.jsp', {waitUntil: 'networkidle2'});
     await page.click("#LOGINSTATUS")
     await page.waitForSelector('#loginForm')
     await page.type('input[id="memId"]', phone)
-
     await page.type('input[id="passwd_show"]', password)
     await page.click(".loginBtn")
     await page.waitForSelector('#bt_0_150_01 > ul.rightMenu > li.membername.loginTxt.loginselected')
     await page.goto('https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8267514&Area=search&mdiv=403&oid=1_1&cid=index&kw=ps5');
    
-    while(!await page.$('#buy_yes > a')){
-        await page.reload()
+    await page.evaluate(() =>{
+        let area = document.querySelector(".checkoutArea");
+        area.innerHTML = `
+        <dt id="buy_yes">
+            <a class="buynow" onclick="javascript:OrderProcess('cart', '');">
+                <img src="images/direct_purchase_btn.png" width="120" height="38" alt="直接購買" title="直接購買">
+            </a>
+        </dt>`
+        
+    })
+
+    
+    while(!await page.$("#shpSumm")){
+            await page.click("#buy_yes")
+            await page.keyboard.press('Enter')
     }
-    await page.click("#buy_yes")
+    
     await page.waitForSelector('#shpSumm > div > ul > li.checkoutBtn > a')
     await page.click("#shpSumm > div > ul > li.checkoutBtn > a")
     await page.waitForSelector('#cardCVV')
