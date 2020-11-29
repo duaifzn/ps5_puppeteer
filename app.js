@@ -37,11 +37,10 @@ const credit_three = "";
 
     while(true){
         if(await page.$('#shpSumm')) break
-        await page.click("#buy_yes")
+        await page.click("#buy_yes").catch(err =>{console.log(err)})
         console.log("click!")
     }
 
- 
 
     await page.waitForSelector('#shpSumm')
     await page.click("#shpSumm > div > ul > li.checkoutBtn > a")
